@@ -1,14 +1,11 @@
 part of 'pengajuan_izin_bloc.dart';
 
 abstract class PengajuanIzinEvent {
-  String? value;
-  PengajuanIzinEvent(this.value);
+  String keteranganIzin;
+  PengajuanIzinEvent(this.keteranganIzin);
 }
 
-class PengajuanIzinSakitEvent extends PengajuanIzinEvent {
-  PengajuanIzinSakitEvent(super.value);
+class SetKeteranganIzinEvent extends PengajuanIzinEvent {
+  SetKeteranganIzinEvent(super.keteranganIzin);
 }
 
-class PengajuanIzinLainnyaEvent extends PengajuanIzinEvent {
-  PengajuanIzinLainnyaEvent(super.value);
-}

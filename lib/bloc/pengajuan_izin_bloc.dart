@@ -1,19 +1,22 @@
 import 'package:bloc/bloc.dart';
 
 part 'pengajuan_izin_event.dart';
-part 'pengajuan_izin_state.dart';
 
-class PengajuanIzinBloc extends Bloc<PengajuanIzinEvent, PengajuanIzinState> {
-  PengajuanIzinBloc() : super(PengajuanIzinInitial("Sakit")) {
-    on<PengajuanIzinSakitEvent>((event, emit) {
-      state.keperluanIzin = event.value.toString();
-      print(state.keperluanIzin);
-      emit(state);
-    });
-    on<PengajuanIzinLainnyaEvent>((event, emit) {
-      state.keperluanIzin = event.value.toString();
-      print(state.keperluanIzin);
-      emit(state);
+class PengajuanIzinBloc extends Bloc<PengajuanIzinEvent, String> {
+  PengajuanIzinBloc() : super("Sakit") {
+    on<SetKeteranganIzinEvent>((event, emit) {
+      print("ini SetKeteranganIzinEvent");
+      final oldState = state;
+
+      // state.keperluanIzin = event.keteranganIzin;
+
+
+      if (oldState == state) {
+        print("state tidak berubah");
+      }
+
+      // print("PengajuanIzinSakitEvent " + state.keperluanIzin);
+      emit(event.keteranganIzin);
     });
   }
 }

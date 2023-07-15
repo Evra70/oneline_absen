@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oneline_absen/bloc/data_pengajuan_bloc.dart';
@@ -37,7 +38,8 @@ class _DashboardPageState extends State<DashboardPage> {
                       builder: (BuildContext bc) {
                         return Wrap(
                           children: <Widget>[
-                            PengajuanIjinBottomUp(pengajuanIzinBloc: pengajuanBloc),
+                            PengajuanIjinBottomUp(
+                                pengajuanIzinBloc: pengajuanBloc),
                           ],
                         );
                       });
@@ -54,10 +56,11 @@ class _DashboardPageState extends State<DashboardPage> {
                 },
                 child: Text("Data Pengajuan"),
               ),
-              BlocBuilder<PengajuanIzinBloc, PengajuanIzinState>(
+              BlocBuilder<PengajuanIzinBloc, String>(
                 bloc: pengajuanBloc,
                 builder: (context, state) {
-                  return Text(state.keperluanIzin);
+                  print("rebuild text sakit");
+                  return Text(state);
                 },
               ),
               Text("Jenis Pengajuan"),
@@ -69,16 +72,30 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 }
 
-class PengajuanIjinBottomUp extends StatelessWidget {
+class PengajuanIjinBottomUp extends StatefulWidget {
   PengajuanIjinBottomUp({Key? key, required this.pengajuanIzinBloc})
       : super(key: key);
   final PengajuanIzinBloc pengajuanIzinBloc;
 
   @override
+  State<PengajuanIjinBottomUp> createState() => _PengajuanIjinBottomUpState();
+}
+
+class _PengajuanIjinBottomUpState extends State<PengajuanIjinBottomUp> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    PengajuanIzinBloc _pengajuanIzinBloc = context.read<PengajuanIzinBloc>();
     String _keperluanIzin = context.select<PengajuanIzinBloc, String>(
-        (pengajuanIjinBloc) => pengajuanIjinBloc.state.keperluanIzin);
+        (pengajuanIjinBloc) => pengajuanIjinBloc.state);
     return Container(
       height: MediaQuery.of(context).size.height * .60,
       padding: EdgeInsets.fromLTRB(12, 14, 0, 0),
@@ -87,8 +104,9 @@ class PengajuanIjinBottomUp extends StatelessWidget {
           borderRadius: new BorderRadius.only(
               topLeft: const Radius.circular(10.0),
               topRight: const Radius.circular(10.0))),
-      child: BlocBuilder<PengajuanIzinBloc, PengajuanIzinState>(
+      child: BlocBuilder<PengajuanIzinBloc, String>(
         builder: (context, pengajuanIzinState) {
+          print("Pngajuan izin di rebuild");
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -115,7 +133,14 @@ class PengajuanIjinBottomUp extends StatelessWidget {
                       value: "Sakit",
                       groupValue: _keperluanIzin,
                       onChanged: (value) {
-                        pengajuanIzinBloc.add(PengajuanIzinSakitEvent(value));
+                        print("KONZ " + _keperluanIzin);
+                        widget.pengajuanIzinBloc
+                            .add(SetKeteranganIzinEvent(value ?? ""));
+                        // print("KONZ 2" +
+                        //     widget.pengajuanIzinBloc.state.keperluanIzin);
+                        // setState(() {
+
+                        // });
                       },
                     ),
                   ),
@@ -134,7 +159,15 @@ class PengajuanIjinBottomUp extends StatelessWidget {
                       value: "Lainnya",
                       groupValue: _keperluanIzin,
                       onChanged: (value) {
-                        pengajuanIzinBloc.add(PengajuanIzinLainnyaEvent(value));
+                        print(value);
+                        print("KONZ 5 " + _keperluanIzin);
+                        widget.pengajuanIzinBloc
+                            .add(SetKeteranganIzinEvent(value ?? ""));
+                        // print("KONZ 6" +
+                        //     widget.pengajuanIzinBloc.add(event));
+                        // setState(() {
+
+                        // });
                       },
                     ),
                   ),
